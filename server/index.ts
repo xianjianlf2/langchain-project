@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import { koaBody } from 'koa-body'
 import Router from 'koa-router'
-import { chat } from './chat.js'
+import { chat } from './chat.ts'
 
 const app = new Koa()
 

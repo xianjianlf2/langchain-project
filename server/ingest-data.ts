@@ -23,14 +23,17 @@ const docs = await splitter.splitDocuments(rawDocs)
 
 const pineconeClient = new PineconeClient()
 await pineconeClient.init({
-  apiKey: process.env.PINECONE_API_KEY,
-  environment: process.env.PINECONE_ENVIRONMENT
+  apiKey: process.env.PINECONE_API_KEY!,
+  environment: process.env.PINECONE_ENVIRONMENT!
 })
 
-const pineconeIndex = await pineconeClient.Index(process.env.PINECONE_INDEX)
+const pineconeIndex = await pineconeClient.Index(process.env.PINECONE_INDEX!)
 
 try {
-  PineconeStore.fromDocuments(docs, new OpenAIEmbeddings(), {
+  PineconeStore.fromDocuments(docs, new OpenAIEmbeddings(undefined, {
+    basePath: process.env.OPENAI_PROXY_URL,
+    apiKey: process.env.OPENAI_API_KEY,
+  }), {
     pineconeIndex,
     textKey: 'text',
     namespace: 'teach-vue3-document'
